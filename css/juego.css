@@ -57,3 +57,19 @@ li::before {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+#juego{
+  width: 900px;
+  height: 900px;
+
+}
+
+.piezas div img{
+  width: 33%;
+
+}
+
+img{
+  float: left;
+  margin: 1px;
+}
