@@ -2,32 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>BMO Arcade</title>
+    <title>Rompecabezas animado</title>
     <link rel="stylesheet" href="css/juego.css">
   </head>
   <body>
     <div class="col-40">
     
       <div id="titulo">
-        <p>Titutlo</p>
+        <h1>Armando a Pikachu</h1>
       </div>
       <div id="instrucciones">
         <ul id="lista-instrucciones">
         </ul>
       </div>
       <div id="objetivo">
+          <img src="images/final2.png" width="1190px" height="1196px">
         <div class="texto-centrado">
-          
+          <p>Resultado</p>
         </div>
       </div>
       <div id="ultimo-mov">
         <div id="flecha" class="texto-centrado">
-          
-        </div>
+      </div>
+        <div id="timer">0</div>
       </div>
       
     </div>
     <div class="col-60">
+      <div id="ga" onclick="cerrar()"><span id="cierre">x</span>GANASTE!</div>
       <div id="juego">
         <div class="piezas">
           <div id="pieza1"><img src="images/1.jpg" alt="piezas"></div>
@@ -38,13 +40,11 @@
           <div id="pieza6"><img src="images/6.jpg" alt="piezas"></div>
           <div id="pieza7"><img src="images/7.jpg" alt="piezas"></div>
           <div id="pieza8"><img src="images/8.jpg" alt="piezas"></div>
-          <div id="pieza9"></div>
+          <div id="pieza9"><img src="images/1.jpg"></div>
         </div>
       </div>
     </div>
-    <div id="footer">
-      
-    </div>
+    <div id="footer"></div>
     <script src="js/juego.js"></script>
   </body>
 </html>

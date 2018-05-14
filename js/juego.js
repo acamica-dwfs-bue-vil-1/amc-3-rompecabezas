@@ -1,5 +1,5 @@
 // Arreglo que contiene las intrucciones del juego 
-var instrucciones = [];
+var instrucciones = ["Utilizar las flechas","Mover la pieza roja", "Armar la imagen"];
 // Arreglo para ir guardando los movimientos que se vayan realizando
 var movimientos = [];
 
@@ -21,21 +21,38 @@ Cada elemento de este arreglo deberá ser mostrado en la lista con id 'lista-ins
 Para eso deberás usar la función ya implementada mostrarInstruccionEnLista().
 Podés ver su implementación en la ultima parte de este codigo. */
 function mostrarInstrucciones(instrucciones) {
-    //COMPLETAR
+    instrucciones.forEach(instruccion => mostrarInstruccionEnLista(instruccion,"lista-instrucciones"));
 }
 
-/* COMPLETAR: Crear función que agregue la última dirección al arreglo de movimientos
+/* Crear función que agregue la última dirección al arreglo de movimientos
 y utilice actualizarUltimoMovimiento para mostrarlo en pantalla */
-
+function ultimoMovimiento(direccion){
+  movimientos.push(direccion);
+  actualizarUltimoMovimiento(direccion);
+}
 /* Esta función va a chequear si el Rompecabezas esta en la posicion ganadora. 
 Existen diferentes formas de hacer este chequeo a partir de la grilla. */
 function chequearSiGano() {
-    //COMPLETAR
+    var resultado = 1;
+  
+   for(var i = 0; i<grilla.length;i++){
+    for(var x = 0 ;x<grilla[i].length;x++){
+      if(grilla[i][x] !== resultado){
+        return false;
+        }
+        resultado++;
+      }
+   }
+   return true;
 }
 
 // Implementar alguna forma de mostrar un cartel que avise que ganaste el juego
 function mostrarCartelGanador() {
-    //COMPLETAR
+  if(chequearSiGano()){
+    console.log("Ganaste");
+    document.getElementById("ga").style.display = "block";
+  }
+
 }
 
 /* Función que intercambia dos posiciones en la grilla.
@@ -49,18 +66,27 @@ En vez de intercambiar esos valores vamos a terminar teniendo en ambas posicione
 Se te ocurre cómo solucionar esto con una variable temporal?
 */
 function intercambiarPosicionesGrilla(filaPos1, columnaPos1, filaPos2, columnaPos2) {
-    //COMPLETAR
+    var grillaTemoporal = grilla.map(arr => arr.slice());
+   
+    grilla[filaPos1][columnaPos1] = grillaTemoporal[filaPos2][columnaPos2];
+    grilla[filaPos2][columnaPos2] = grillaTemoporal[filaPos1][columnaPos1];
+    
+    //console.table(grillaTemoporal);
+    //console.table(grilla);
 }
 
 // Actualiza la posición de la pieza vacía
 function actualizarPosicionVacia(nuevaFila, nuevaColumna) {
-    //COMPLETAR
+    filaVacia = nuevaFila;
+    columnaVacia = nuevaColumna;
+
 }
 
 
 // Para chequear si la posicón está dentro de la grilla.
 function posicionValida(fila, columna) {
-    //COMPLETAR
+  console.log(fila,columna);
+  return fila >= 0 && fila <= 2 && columna >= 0 && columna <= 2;
 }
 
 /* Movimiento de fichas, en este caso la que se mueve es la blanca intercambiando su posición con otro elemento.
@@ -71,24 +97,26 @@ function moverEnDireccion(direccion) {
 
   // Mueve pieza hacia la abajo, reemplazandola con la blanca
   if (direccion === codigosDireccion.ABAJO) {
-    nuevaFilaPiezaVacia = filaVacia - 1;
+    nuevaFilaPiezaVacia = filaVacia + 1;
     nuevaColumnaPiezaVacia = columnaVacia;
   }
     
   // Mueve pieza hacia arriba, reemplazandola con la blanca
   else if (direccion === codigosDireccion.ARRIBA) {
-    nuevaFilaPiezaVacia = filaVacia + 1;
+    nuevaFilaPiezaVacia = filaVacia - 1;
     nuevaColumnaPiezaVacia = columnaVacia;
   }
     
   // Mueve pieza hacia la derecha, reemplazandola con la blanca
   else if (direccion === codigosDireccion.DERECHA) {
-    //COMPLETAR
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia + 1;
   }
     
   // Mueve pieza hacia la izquierda, reemplazandola con la blanca
   else if (direccion === codigosDireccion.IZQUIERDA) {
-    // COMPLETAR
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia - 1;
   }
 
   /* A continuación se chequea si la nueva posición es válida, si lo es, se intercambia. 
@@ -98,8 +126,7 @@ function moverEnDireccion(direccion) {
     if (posicionValida(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia)) {
         intercambiarPosiciones(filaVacia, columnaVacia, nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
         actualizarPosicionVacia(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
-
-  //COMPLETAR: Agregar la dirección del movimiento al arreglo de movimientos
+        ultimoMovimiento(direccion);
 
     }
 }
@@ -183,6 +210,7 @@ pasado con el parámetro "instrucción". */
 function mostrarInstruccionEnLista(instruccion, idLista) {
   var ul = document.getElementById(idLista);
   var li = document.createElement("li");
+
   li.textContent = instruccion;
   ul.appendChild(li);
 }
@@ -193,6 +221,7 @@ se mezclará todo el tablero. */
 
 function mezclarPiezas(veces) {
   if (veces <= 0) {
+    startTimer();
     return;
   }
   
@@ -225,6 +254,7 @@ function capturarTeclas() {
         var gano = chequearSiGano();
         if (gano) {
           setTimeout(function() {
+              stopTimer();
               mostrarCartelGanador();
               }, 500);
             }
@@ -244,3 +274,24 @@ function iniciar() {
 
 // Ejecutamos la función iniciar
 iniciar();
+
+var time = 0;
+var interval;
+
+function startTimer(){
+  var timer = document.getElementById("timer");
+  interval = setInterval(function(){
+    time++;
+    timer.innerHTML = time;
+  },1000);
+}
+
+function stopTimer(){
+  clearInterval(interval);
+}
+
+function cerrar(){
+  document.getElementById("ga").style.display = "none"
+  time = 0;
+  mezclarPiezas(30);
+}
